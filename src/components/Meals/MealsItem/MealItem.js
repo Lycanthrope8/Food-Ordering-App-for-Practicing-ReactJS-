@@ -1,37 +1,21 @@
-import react from "react";
+import react, { useContext } from "react";
 import classes from "./MealItem.module.css";
 import MealItemForm from "./MealItemForm";
-const DUMMY_MEALS = [
-  {
-    id: "m1",
-    name: "Sushi",
-    description: "Finest fish and veggies",
-    price: 22.99,
-  },
-  {
-    id: "m2",
-    name: "Schnitzel",
-    description: "A german specialty!",
-    price: 16.5,
-  },
-  {
-    id: "m3",
-    name: "Barbecue Burger",
-    description: "American, raw, meaty",
-    price: 12.99,
-  },
-  {
-    id: "m4",
-    name: "Green Bowl",
-    description: "Healthy...and green...",
-    price: 18.99,
-  },
-];
+import CartContext from "../../../context/cart-context";
 
 const MealItem = (props) => {
   // const mealsList = DUMMY_MEALS.map((meal) => <li>{meal.name}</li>);
-
+  const cartCtx = useContext(CartContext)
   const price = `$${props.price.toFixed(2)}`;
+  const addToCartHandler = (amount) =>{
+    cartCtx.addItem({
+      id: props.id,
+      name : props.name,
+      amount : props.amount,
+      price: props.price,
+    })
+  }
+
   return (
     <>
       <li className={classes.meal}>
@@ -41,7 +25,7 @@ const MealItem = (props) => {
           <div className={classes.price}>{price}</div>
         </div>
         <div>
-          <MealItemForm />
+          <MealItemForm onAddToCart = {addToCartHandler}/>
         </div>
       </li>
     </>
